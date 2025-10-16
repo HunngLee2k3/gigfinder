@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "608435301949",
+    "project_id": "localgigfinder",
+    "storage_bucket": "localgigfinder.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608435301949:android:0e5375a5842454c2dd4454",
+        "android_client_info": {
+          "package_name": "com.example.gig_finder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCk53B51YDs-VfpFaHwKzDlTNdPc4CYbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
