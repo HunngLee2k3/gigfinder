@@ -17,9 +17,10 @@ class RegisterScreen extends StatelessWidget {
       await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'name': nameController.text.trim(),
         'momo_phone': momoPhoneController.text.trim(),
-        'wallet_balance': 0.0,
+        'wallet_balance': 0, // Sử dụng số 0
         'role': 'worker',
         'rating': 0.0,
+        'review_count': 0,
       });
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {

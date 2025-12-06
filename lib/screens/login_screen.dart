@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -7,11 +8,33 @@ class LoginScreen extends StatelessWidget {
 
   Future<void> signIn(BuildContext context) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      Navigator.pushReplacementNamed(context, '/home');
+
+      // Sau khi đăng nhập, kiểm tra xem document người dùng có tồn tại không
+      if (userCredential.user != null) {
+        final userDocRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
+        final doc = await userDocRef.get();
+
+        // Nếu document không tồn tại, tạo mới với thông tin cơ bản
+        if (!doc.exists) {
+          await userDocRef.set({
+            'name': 'Người dùng mới', // Tên mặc định
+            'email': userCredential.user!.email, // Lấy email từ auth
+            'momo_phone': '',
+            'wallet_balance': 0.0,
+            'role': 'worker',
+            'rating': 0.0,
+            'review_count': 0,
+          });
+        }
+      }
+
+      // Sau khi đăng nhập thành công, điều hướng về root ('/')
+      // AuthWrapper sẽ tự động chuyển đến HomeScreen
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Lỗi đăng nhập: $e')),
